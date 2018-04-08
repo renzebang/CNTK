@@ -660,6 +660,5 @@ template <class ElemType>
 template class LearnableParameter<float>;
 template class LearnableParameter<double>;
 template class LearnableParameter<half>;
-template class LearnableParameter<char>;
 
 }}}
