@@ -208,6 +208,7 @@ def eval(op, arguments=None, precision=None, device=None, backward_pass=False, e
         return forward_output, None
 
 def _to_cntk_dict_value(py_value):
+    print("COMING HERE")
     if isinstance(py_value, dict):
         return DictionaryValueFromDict(_py_dict_to_cntk_dict(py_value))
 
@@ -216,6 +217,7 @@ def _to_cntk_dict_value(py_value):
         return DictionaryValue(py_list)
 
     if isinstance(py_value, np.ndarray):
+        print("COMING HERE TOO")
         py_value = NDArrayView.from_dense(py_value)
         return DictionaryValueFromNDArrayView(py_value)
 
