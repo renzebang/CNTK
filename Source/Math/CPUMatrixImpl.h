@@ -7277,6 +7277,9 @@ template void CPUMatrix<char>::Resize(const size_t numRows, const size_t numCols
 template char* CPUMatrix<char>::CopyToArray(void) const;
 template void CPUMatrix<char>::CopySection(size_t numRows, size_t numCols, char* dst, size_t colStride) const;
 template void CPUMatrix<char>::Reshape(const size_t, const size_t);
+template void CPUMatrix<char>::SetUniformRandomValue(const char low, const char high, unsigned long seed);
+template void CPUMatrix<char>::SetUniformRandomValue(RNGHandle& rngHandle, const char low, const char high);
+template void CPUMatrix<char>::SetGaussianRandomValue(const char mean, const char sigma, unsigned long seed);
 
 // Support <short>
 template CPUMatrix<short>::CPUMatrix(const size_t numRows, const size_t numCols);
