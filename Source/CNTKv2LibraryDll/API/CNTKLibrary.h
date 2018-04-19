@@ -1377,7 +1377,6 @@ namespace CNTK
             None,
             Bool,
             Int,
-            Int8,
             SizeT,
             Float,
             Double,
@@ -1400,8 +1399,6 @@ namespace CNTK
                 return "Bool";
             case Type::Int:
                 return "Int";
-            case Type::Int8:
-                return "Int8";
             case Type::SizeT:
                 return "SizeT";
             case Type::Float:
@@ -1438,11 +1435,6 @@ namespace CNTK
         }
 
         DictionaryValue(int value) : m_valueType(GetValueType<int>())
-        {
-            m_data.m_int = value;
-        }
-
-        DictionaryValue(int8_t value) : m_valueType(GetValueType<int8_t>())
         {
             m_data.m_int = value;
         }
@@ -1676,7 +1668,6 @@ namespace CNTK
         {
             static_assert((std::is_same<T, bool>::value ||
                            std::is_same<T, int>::value ||
-                           std::is_same<T, int8_t>::value ||
                            std::is_same<T, size_t>::value ||
                            std::is_same<T, float>::value ||
                            std::is_same<T, double>::value ||
@@ -1691,7 +1682,6 @@ namespace CNTK
 
             if (std::is_same<T, bool>::value)                                      return Type::Bool;
             if (std::is_same<T, int>::value)                                       return Type::Int;
-            if (std::is_same<T, int8_t>::value)                                    return Type::Int8;
             if (std::is_same<T, size_t>::value)                                    return Type::SizeT;
             if (std::is_same<T, float>::value)                                     return Type::Float;
             if (std::is_same<T, double>::value)                                    return Type::Double;
