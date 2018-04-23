@@ -54,15 +54,15 @@ namespace CNTK
                 else
                 {
                     // batch normalization on FP16 requires 32-bit scale/bias/mean/variance, so specialize that case
-                    //bool batchNormSpecialCase =
-                    //    (op == PrimitiveOpType::BatchNormalization) &&
-                    //    (outputDataType == DataType::Float16) &&
-                    //    (inputDataType == DataType::Float);
+                    bool batchNormSpecialCase =
+                        (op == PrimitiveOpType::BatchNormalization) &&
+                        (outputDataType == DataType::Float16) &&
+                        (inputDataType == DataType::Float);
 
                     // The DataType of all operands should match except for Constants where we allow coercion
-                    //if ((inputDataType != DataType::Unknown) && (inputDataType != outputDataType) && !input.IsConstant() && !batchNormSpecialCase)
-                    //    InvalidArgument("Primitive op '%S' passed operands '%S' with different DataTypes '%s' and '%s'.",
-                    //                    PrimitiveOpTypeName(op).c_str(), NamedListString(inputs).c_str(), DataTypeName(outputDataType), DataTypeName(inputDataType));
+                    if ((inputDataType != DataType::Unknown) && (inputDataType != outputDataType) && !input.IsConstant() && !batchNormSpecialCase)
+                        InvalidArgument("Primitive op '%S' passed operands '%S' with different DataTypes '%s' and '%s'.",
+                                        PrimitiveOpTypeName(op).c_str(), NamedListString(inputs).c_str(), DataTypeName(outputDataType), DataTypeName(inputDataType));
                 }
             }
         }

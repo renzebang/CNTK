@@ -7269,6 +7269,7 @@ template CPUMatrix<char>& CPUMatrix<char>::operator=(CPUMatrix<char>&&);
 template void CPUMatrix<char>::SetValue(const char);
 template void CPUMatrix<char>::SetValue(const size_t numRows, const size_t numCols, char* pArray, size_t matrixFlags);
 template void CPUMatrix<char>::SetValue(CPUMatrix<char> const&);
+template bool CPUMatrix<char>::IsEqualTo(const CPUMatrix<char>& a, const char threshold) const;
 //template void CPUMatrix<char>::SetValue(GPUMatrix<char> const&);
 //template void CPUMatrix<char>::SetValue(CPUSparseMatrix<char> const&);
 //template void CPUMatrix<char>::SetValue(GPUSparseMatrix<char> const&);
