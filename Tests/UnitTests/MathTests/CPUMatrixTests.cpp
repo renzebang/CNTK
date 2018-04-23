@@ -53,8 +53,8 @@ BOOST_FIXTURE_TEST_CASE(CPUMatrixCharConstructorNoFlags, RandomSeedFixture)
     BOOST_CHECK_EQUAL(m(0, 0), 1);
     BOOST_CHECK_EQUAL(m(1, 2), 2);
 
-    //CPUMatrix<char> m1(m);
-    //BOOST_CHECK(m1.IsEqualTo(m));
+    CPUMatrix<char> m1(m);
+    BOOST_CHECK(m1.IsEqualTo(m));
 }
 
 BOOST_FIXTURE_TEST_CASE(CPUMatrixConstructorFlagNormal, RandomSeedFixture)
