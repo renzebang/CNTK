@@ -244,15 +244,6 @@ namespace CNTK
                     dst->mutable_data()[i] = (DstT)buffer[i];
         }
 
-        static void CopyInt8Data(const NDArrayView& src, RepeatedField<int>* dst)
-        {
-            auto size = src.Shape().TotalSize();
-            dst->Resize((int)size, int8_t()); //use int8_t for protobuf
-            const int8_t* buffer = src.DataBuffer<int8_t>();
-            for (size_t i = 0; i < size; i++)
-                dst->mutable_data()[i] = (int8_t)buffer[i];
-        }
-
         static void WriteInt8Data(const NDArrayView& src, io::CodedOutputStream& output)
         {
             auto size = src.Shape().TotalSize();
@@ -260,7 +251,6 @@ namespace CNTK
             for (auto i = 0; i < size; i++)
             {
                 auto value = buffer[i];
-                //output.WriteLittleEndian32(Encode<int, uint32>(value));
                 output.WriteVarint32SignExtended(Encode<int8_t, int8_t>(value));
             }
         }
@@ -298,15 +288,6 @@ namespace CNTK
                 buffer[i] = (DstT)value;
             }
             return true;
-        }
-
-        static void CopyInt8Data(const RepeatedField<int>& src, NDArrayView* dst)
-        {
-            auto size = src.size();
-            assert(size == dst->Shape().TotalSize());;
-            int8_t* buffer = dst->WritableDataBuffer<int8_t>();
-            for (size_t i = 0; i < size; i++)
-                buffer[i] = (int8_t)src.data()[i];
         }
 
         template <typename SrcT, typename DstT = SrcT>
@@ -362,7 +343,7 @@ namespace CNTK
             }
             else if (src.GetDataType() == DataType::Int8)
             {
-                CopyInt8Data(src, dst->mutable_sint32_values()->mutable_value());
+                CopyData<int8_t, int32>(src, dst->mutable_sint32_values()->mutable_value());
             }
         }
     }
@@ -417,7 +398,7 @@ namespace CNTK
             }
             else if (dst.GetDataType() == DataType::Int8)
             {
-                if (!ReadData<char, int8_t>(wrapper, dst))
+                if (!ReadData<int8_t, int8_t>(wrapper, dst))
                     return false;
             }
         }
@@ -526,7 +507,7 @@ namespace CNTK
         else if (dataType == DataType::Int8)
         {
             if (src.sint32_values().value().size() == shape->TotalSize())
-                CopyInt8Data(src.sint32_values().value(), dst);
+                CopyData<int32, int8_t>(src.sint32_values().value(), dst);
             else
                 m_arrayViews.push_back({ dst, nullptr });
         }
@@ -768,10 +749,7 @@ namespace CNTK
         io::CodedInputStream codedInput(&input);
         codedInput.SetTotalBytesLimit(limit, limit);
 
-        bool parseDone = msg.ParseFromCodedStream(&codedInput);
-        bool readFully = codedInput.ConsumedEntireMessage();
-
-        return  parseDone && readFully;
+        return msg.ParseFromCodedStream(&codedInput) && codedInput.ConsumedEntireMessage();
     }
 
     bool Serializer::Read(std::istream& stream, Dictionary& dict)
