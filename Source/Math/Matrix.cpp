@@ -6294,6 +6294,7 @@ template Matrix<char> Matrix<char>::RandomGaussian(const size_t rows, const size
 template void Matrix<char>::SetMatrixFromCSCFormat(const CPUSPARSE_INDEX_TYPE* h_CSCCol, const CPUSPARSE_INDEX_TYPE* h_Row, const char* h_Val,
     const size_t nz, const size_t numRows, const size_t numCols, DataTransferer* transferer);
 template void Matrix<char>::AdjustSparseBlockColumn(const GPUSPARSE_INDEX_TYPE* cpuCol2BlockId, size_t numBlocks, bool useBlockId2Col);
+template void Matrix<char>::TransferFromDeviceToDevice(int from_id, int to_id, bool isBeingMoved, bool emptyTransfer/* = false*/, bool updatePreferredDevice/* = true*/) const;
 
 // Matrix<short> methods
 template Matrix<short>::Matrix(DEVICEID_TYPE);
