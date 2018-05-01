@@ -24,6 +24,7 @@
 #include "SpecialPurposeNodes.h"
 #include "SequenceReshapeNodes.h"
 #include "UserDefinedFunction.h"
+#include "QuantizationProxyNodes.h"
 
 using namespace Microsoft::MSR::CNTK;
 
@@ -1324,6 +1325,11 @@ namespace CNTK
                         ASSIGN_NEW_NODE2(CastNode, half, network->GetDeviceId(), internalNodeName);
                         break;
                     }
+                    break;
+                }
+                case PrimitiveOpType::QuantizedProxyTimes:
+                {
+                    ASSIGN_NEW_NODE(QuantizedProxyTimesNode, network->GetDeviceId(), internalNodeName);
                     break;
                 }
                 default:

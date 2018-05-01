@@ -3960,3 +3960,46 @@ def mean_variance_normalization(operand, epsilon=0.00001, use_stats_across_chann
         raise ValueError('epsilon must be non-negative.')
     operand = sanitize_input(operand, get_data_type(operand))  
     return mean_variance_normalization(operand, epsilon, use_stats_across_channels, do_variance_scaling, name)
+
+@typemap
+def quantized_proxy_times(v1, v2, v3, v4, name=''):
+    '''
+    Computes mean-variance normalization of the specified input operand. 
+
+    This operation computes and mean and variance for the entire tensor if use_stats_across_channels is True. 
+    If use_stats_across_channels is False the computes mean and variance per channel and normalizes each 
+    channel with its own mean and variance. If do_variance_scaling is False, only the mean is subtracted,
+    and the variance scaling is omitted.
+    
+    Example:
+        >>> data = np.array([[[0., 2], [4., 6.]], [[0., 4], [8., 12.]]]).astype(np.float32)
+        >>> data
+        array([[[  0.,   2.],
+                [  4.,   6.]],
+        <BLANKLINE>
+               [[  0.,   4.],
+                [  8.,  12.]]], dtype=float32)
+        >>> saved_precision = np.get_printoptions()['precision']
+        >>> np.set_printoptions(precision=4) # For consistent display upto 4 decimals.
+        >>> C.mean_variance_normalization(data).eval()
+        array([[[-1.3416, -0.4472],
+                [ 0.4472,  1.3416]],
+        <BLANKLINE>
+               [[-1.3416, -0.4472],
+                [ 0.4472,  1.3416]]], dtype=float32)
+        >>> np.set_printoptions(precision=saved_precision) # Reseting the display precision.
+
+    Args:
+        operand: Input tensor, with dimensions :math:`[C \\times H \\times W]`.
+        epsilon (double, default 0.00001): epsilon added to the standard deviation to avoid division by 0.
+        use_stats_across_channels (bool): If False, mean and variance are computed per channel.
+         If True, mean and variance are computed over the entire tensor (all axes).
+        do_variance_scaling (bool): If False, only the mean is subtracted. If True, it is also
+         scaled by inverse of standard deviation.
+        name (str, optional): the name of the Function instance in the network
+    Returns:
+        :class:`~cntk.ops.functions.Function`
+    
+    '''
+    from cntk.cntk_py import quantized_proxy_times
+    return quantized_proxy_times(v1,v2,v3,v4, name)
