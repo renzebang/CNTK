@@ -387,7 +387,7 @@ namespace CNTK
         else if (aggregateDataType == DataType::Double)
             m_rootGradientValue->Data()->SetValue(1.0);
         else if (aggregateDataType == DataType::Float16)
-            m_rootGradientValue->Data()->SetValue(static_cast<float16>(1.0));
+            m_rootGradientValue->Data()->SetValue(float16(1.0));
         else
             RuntimeError("DataType %s is not supported for root gradients", DataTypeName(aggregateDataType));
 
