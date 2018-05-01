@@ -384,8 +384,10 @@ namespace CNTK
             m_rootGradientValue->Data()->SetValue(1.0f);
         else if (m_aggregatedLossFunction->Output().GetDataType() == DataType::Double)
             m_rootGradientValue->Data()->SetValue(1.0);
+        else if (m_aggregatedLossFunction->Output().GetDataType() == DataType::Int8)
+            m_rootGradientValue->Data()->SetValue(static_cast<int8_t>(1));
         else
-            m_rootGradientValue->Data()->SetValue(static_cast<half>(half(1.0)));
+            m_rootGradientValue->Data()->SetValue(half(1.0));
 
         for (const auto& parameter : m_learnerParameters)
             parameterGradients[parameter] = nullptr;
