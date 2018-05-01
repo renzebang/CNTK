@@ -23,6 +23,7 @@
 #include "RecurrentNodes.h"
 #include "SpecialPurposeNodes.h"
 #include "TrainingNodes.h"
+#include "QuantizationProxyNodes.h"
 
 #include <string>
 
@@ -153,6 +154,7 @@ static shared_ptr<ComputationNode<ElemType>> CreateStandardNode(const std::wstri
     else if (nodeType == OperationNameOf(LegacyReshapeNode))                    return New<LegacyReshapeNode<ElemType>>(forward<_Types>(_Args)...);
 #endif
     else if (nodeType == OperationNameOf(MaxUnpoolingNode))                     return New<MaxUnpoolingNode<ElemType>>(forward<_Types>(_Args)...);
+    else if (nodeType == OperationNameOf(QuantizedProxyTimesNode))              return New<QuantizedProxyTimesNode<ElemType>>(forward<_Types>(_Args)...);
     else InvalidArgument("Attempted to instantiate undefined operation %ls.", nodeType.c_str());
 }
 
